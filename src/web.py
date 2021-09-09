@@ -4,6 +4,7 @@ import numpy as np
 import config
 import os
 import sqlite3
+import mysql.connector as mysql
 
 
 URL = 'file:///home/christoph/Dokumente/Azure/ProjectToSVN/html/test.html'
@@ -15,6 +16,56 @@ DATABASE = 'projects.db'
 def login():
     r = requests.get(URL, auth=(username, password))
     r.status_code
+
+
+def writeMySql(df: pd.DataFrame, row):
+
+    database = 'Custom'
+    table = 'Projects'
+
+    dic = df.to_dict()
+
+    mycon = mysql.connect(
+        host='localhost',
+        user='root',
+        passwd='Sol170701'
+    )
+
+    mycursor = mycon.cursor()
+    mycursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
+
+    mycon = mysql.connect(
+        host='localhost',
+        user='root',
+        passwd='Sol170701',
+        database=database
+    )
+
+    mycursor = mycon.cursor()
+
+    sql_table = f""" CREATE TABLE IF NOT EXISTS {table} (
+                                                Vorgangsnummer TEXT,
+                                                Kundenname TEXT,
+                                                Typ TEXT,
+                                                Steuerung TEXT,
+                                                Ersteller TEXT
+                                                );"""
+
+    mycursor.execute(sql_table)
+
+    sql= f"""INSERT INTO {table} (
+                          Vorgangsnummer,
+                          Kundenname,
+                          Typ,
+                          Steuerung,
+                          Ersteller) 
+                          VALUES (%s, %s, %s, %s, %s)"""
+
+    mycursor.execute(sql, (dic.get('Vorgangs­nummerAbsteigend'), dic.get(
+        'Kunden\xadname'), dic.get('Typ'), dic.get('Steuerung'), dic.get('Ersteller')))
+
+    mycon.commit()
+    pass
 
 
 def writeDatabase(df: pd.DataFrame, row):
@@ -33,12 +84,17 @@ def writeDatabase(df: pd.DataFrame, row):
                                             Ersteller TEXT
                                             );"""
 
-    sql_query_insert = """INSERT INTO Projects
-                          (Vorgangsnummer, Kundenname, Typ, Steuerung, Ersteller) 
-                           VALUES (?, ?, ?, ?, ?);"""
+    sql_query_insert = """INSERT INTO Projects (
+                          Vorgangsnummer,
+                          Kundenname,
+                          Typ,
+                          Steuerung,
+                          Ersteller) 
+                          VALUES (?, ?, ?, ?, ?);"""
 
     cursor.execute(sql_table)
-    cursor.execute(sql_query_insert, (dic.get('Vorgangs­nummerAbsteigend'), dic.get('Kunden\xadname'), dic.get('Typ'), dic.get('Steuerung'), dic.get('Ersteller')))
+    cursor.execute(sql_query_insert, (dic.get('Vorgangs­nummerAbsteigend'), dic.get(
+        'Kunden\xadname'), dic.get('Typ'), dic.get('Steuerung'), dic.get('Ersteller')))
     connection.commit()
     connection.close()
 
@@ -75,7 +131,6 @@ df.index = df.index + 1
 df.index = df.index.rename('Index')
 
 
-
-
 for i in range(len(df)):
-    writeDatabase(df=df.iloc[i], row=i+1)
+    writeMySql(df=df.iloc[i], row=i+1)
+    #writeDatabase(df=df.iloc[i], row=i+1)
