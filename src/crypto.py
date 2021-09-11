@@ -1,4 +1,5 @@
 from cryptography.fernet import Fernet
+import uuid
 
 
 def write_key():

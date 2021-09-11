@@ -4,13 +4,23 @@ from src import crypto
 from src import database
 import os
 from datetime import datetime
-
+import time
+from progress.bar import Bar
 
 db = 'AWT.db'
 table = ['projects', 'svn_path']
 key = crypto.load_key('key.key')
 ini = '.ini'
 
+def progress(count, total, status=''):
+    bar_len = 100
+    filled_len = int(round(bar_len * count / float(total)))
+
+    percents = round(100.0 * count / float(total), 1)
+    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+
+    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+    sys.stdout.flush() 
 
 def main():
     '''
@@ -64,3 +74,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    pass
