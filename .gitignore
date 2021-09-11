@@ -139,3 +139,4 @@ cython_debug/
 test/
 src/config.py
 projects.db
+key.key

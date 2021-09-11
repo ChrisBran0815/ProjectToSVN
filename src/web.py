@@ -10,7 +10,7 @@ import mysql.connector as mysql
 URL = 'file:///home/christoph/Dokumente/Azure/ProjectToSVN/html/test.html'
 username = config.username()
 password = config.password()
-DATABASE = 'projects.db'
+#DATABASE = 'projects.db'
 
 
 def login():
