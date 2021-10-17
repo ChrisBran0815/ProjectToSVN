@@ -8,6 +8,7 @@ def create_database(db, table):
                                             Project_Number TEXT,
                                             Customer_Name TEXT,
                                             Machine_Typ TEXT,
+                                            Branch TEXT,
                                             Creator TEXT,
                                             Date DATETIME
                                             );"""
@@ -21,5 +22,7 @@ def create_database(db, table):
     pass
 
 def insert_database(db, in_value):
-        
+    
+    insert = '''INSERT INTO '''
+
     pass
