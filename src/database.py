@@ -1,19 +1,25 @@
 import sqlite3
+import getpass
 
-def create_db(db):
-    '''
-    creat an Sqllite Database if not exists
-    '''
+
+def create_database(db, table):
+
+    table = (f""" CREATE TABLE IF NOT EXISTS {table} (
+                                            Project_Number TEXT,
+                                            Customer_Name TEXT,
+                                            Machine_Typ TEXT,
+                                            Creator TEXT,
+                                            Date DATETIME
+                                            );"""
+                                            )
+
     sql_db = sqlite3.connect(db)
-
-def create_table(db, sql_tables):
-
-    sql_db =sqlite3.connect(db)
     cursor = sql_db.cursor()
-
-    for sql_table in sql_tables:
-
-        cursor.execute(sql_table)
-
+    cursor.execute(table)
     sql_db.commit()
     sql_db.close()
+    pass
+
+def insert_database(db, in_value):
+        
+    pass
