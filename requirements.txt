@@ -1,3 +1,4 @@
 autopep8==1.5.7
 pycodestyle==2.8.0
+tabulate==0.8.9
 toml==0.10.2
