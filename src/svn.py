@@ -5,7 +5,7 @@ from . import database
 from tabulate import tabulate
 
 
-def new_entry(work_path, repo_path, template):
+def new_entry(work_path, repo_path, template, db, table, user):
 
     # Check if the folder {work_path} exist if not create
     # if not os.path.exists(work_path):
@@ -16,7 +16,7 @@ def new_entry(work_path, repo_path, template):
             os.system('clear')
         else:
             os.system('cls')
-            
+
         while True:
             vnum = input('Enter the V-Number: ')
             if not vnum == '':
@@ -42,11 +42,12 @@ def new_entry(work_path, repo_path, template):
             os.system('cls')
 
         print(tabulate([[vnum, custname, machine_typ, branch]], headers=['V-Number', 'Customer Name', 'Machine Type', 'Branch'], tablefmt='orgtbl'))
-        in_right = input('Is your input correct? (Y/N): ')
+        in_right = input('\nIs your input correct? (Y/N): ')
         if in_right in ['Y', 'y']:
             break
         else: 
             continue
+    database.insert_database(db, table, in_value=(vnum, custname, machine_typ, branch, user))
     sys.exit()
     projname = 'VT_' + vnum + '_' + custname.replace(' ', '_')
     work_path = work_path + '/' + projname

@@ -12,6 +12,7 @@ table = config.get('Database', 'table1')
 repo_path = config.get('SVN', 'repopath')
 work_path = config.get('SVN', 'workpath')
 template = config.get('SVN', 'templatepath')
+user = config.get('Users', getpass.getuser())
 
 def main():
 
@@ -49,7 +50,7 @@ def main():
                         print(1)
                     case '2':
                         # 2. Create a new Project
-                        svn.new_entry(work_path, repo_path, template)
+                        svn.new_entry(work_path, repo_path, template, db, table, user)
                         print(2)
                     case _:
                         continue
